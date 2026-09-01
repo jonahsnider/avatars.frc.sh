@@ -25,10 +25,26 @@ const tbaMediaSchema = z.array(
 
 export class UpstreamError extends Error {}
 
-export async function fetchLatestAvatar(
+export async function fetchCurrentAvatar(
 	teamNumber: number,
 	authKey: string,
 	currentYear: number,
+): Promise<{ bytes: Uint8Array; year: number } | undefined> {
+	return fetchAvatarForYears(teamNumber, authKey, [currentYear, currentYear - 1]);
+}
+
+export async function fetchAvatar(
+	teamNumber: number,
+	authKey: string,
+	year: number,
+): Promise<{ bytes: Uint8Array; year: number } | undefined> {
+	return fetchAvatarForYears(teamNumber, authKey, [year]);
+}
+
+async function fetchAvatarForYears(
+	teamNumber: number,
+	authKey: string,
+	years: number[],
 ): Promise<{ bytes: Uint8Array; year: number } | undefined> {
 	const tbaFetch = pipeline(
 		fetch,
@@ -39,7 +55,7 @@ export async function fetchLatestAvatar(
 		withJsonResponse({ schema: tbaMediaSchema }),
 	);
 
-	for (const year of [currentYear, currentYear - 1]) {
+	for (const year of years) {
 		let body: z.infer<typeof tbaMediaSchema>;
 		try {
 			body = await tbaFetch(`team/frc${teamNumber}/media/${year}`);

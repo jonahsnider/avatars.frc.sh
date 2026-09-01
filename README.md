@@ -1,6 +1,6 @@
 # avatars.frc.sh
 
-A small public API for the latest FRC team avatars published by [The Blue Alliance](https://www.thebluealliance.com/). Avatars are fetched on demand, persisted in Cloudflare R2, and served through Cloudflare Workers Cache.
+A small public API for FRC team avatars published by [The Blue Alliance](https://www.thebluealliance.com/). Avatars are fetched on demand, persisted in Cloudflare R2, and served through Cloudflare Workers Cache.
 
 ## API
 
@@ -8,9 +8,17 @@ A small public API for the latest FRC team avatars published by [The Blue Allian
 GET https://avatars.frc.sh/teams/581.png
 ```
 
-The endpoint returns the latest avatar found in the current FRC year, falling back to the previous year. It returns `404` when no avatar is available.
+The endpoint returns the team's current avatar, checking the current FRC year and then the previous year. It does not search further back and returns `404` when neither season has an avatar.
 
-Successful responses include an `X-Avatar-Year` header with the source year. Images refresh daily. Missing avatars are cached for six hours.
+Request a specific FRC season by adding the year:
+
+```http
+GET https://avatars.frc.sh/teams/2024/581.png
+```
+
+The historical endpoint checks only the requested season. Years from 1992 through the current year are accepted.
+
+Successful responses include an `X-Avatar-Year` header with the source year. Current avatars refresh daily, while completed seasons refresh every 30 days. Missing current avatars are cached for six hours; missing historical avatars are cached for seven days.
 
 The OpenAPI 3.1.0 document is available at [`/openapi.json`](https://avatars.frc.sh/openapi.json).
 
@@ -63,6 +71,6 @@ There is intentionally no daily bulk job. A bulk refresh would issue thousands o
 3. After one day, Cloudflare serves the stale image while the Worker refreshes it in the background.
 4. Missing avatars use a short negative-cache marker in R2 so repeated requests do not hit TBA.
 
-Only the latest avatar is exposed. Historical avatars are not part of the API contract.
+Current and year-specific avatars use separate R2 keys and negative-cache markers. Requesting a historical avatar never changes the default current avatar.
 
 Workers Cache is enabled in `wrangler.jsonc` and caches responses before the Worker executes. Hono's cache middleware is intentionally not used because it relies on the lower-level, data-center-local Cache API and would duplicate this cache layer.

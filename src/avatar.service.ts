@@ -1,12 +1,17 @@
-import { fetchLatestAvatar, UpstreamError } from './tba.service';
+import { fetchAvatar as fetchAvatarForYear, fetchCurrentAvatar, UpstreamError } from './tba.service';
 
-const AVATAR_REFRESH_MS = 24 * 60 * 60 * 1000;
-const MISSING_REFRESH_MS = 6 * 60 * 60 * 1000;
+const CURRENT_AVATAR_REFRESH_MS = 24 * 60 * 60 * 1000;
+const HISTORICAL_AVATAR_REFRESH_MS = 30 * 24 * 60 * 60 * 1000;
+const CURRENT_MISSING_REFRESH_MS = 6 * 60 * 60 * 1000;
+const HISTORICAL_MISSING_REFRESH_MS = 7 * 24 * 60 * 60 * 1000;
 
-const AVATAR_CACHE_CONTROL =
+const CURRENT_AVATAR_CACHE_CONTROL =
 	'public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400, stale-if-error=604800';
-const STALE_AVATAR_CACHE_CONTROL = 'public, max-age=60, s-maxage=300, stale-if-error=604800';
-const MISSING_CACHE_CONTROL = 'public, max-age=300, s-maxage=21600, stale-while-revalidate=3600';
+const HISTORICAL_AVATAR_CACHE_CONTROL =
+	'public, max-age=86400, s-maxage=2592000, stale-while-revalidate=604800, stale-if-error=31536000';
+const STALE_CURRENT_AVATAR_CACHE_CONTROL = 'public, max-age=60, s-maxage=300, stale-if-error=604800';
+const CURRENT_MISSING_CACHE_CONTROL = 'public, max-age=300, s-maxage=21600, stale-while-revalidate=3600';
+const HISTORICAL_MISSING_CACHE_CONTROL = 'public, max-age=3600, s-maxage=604800, stale-while-revalidate=86400';
 
 export type Bindings = Env & {
 	TBA_AUTH_KEY: string;
@@ -16,36 +21,46 @@ type AvatarMetadata = {
 	sourceYear: string;
 };
 
-export async function getAvatar(request: Request, env: Bindings, teamNumber: number): Promise<Response> {
-	const avatarKey = `avatars/${teamNumber}.png`;
-	const missingKey = `missing/${teamNumber}`;
+export async function getAvatar(request: Request, env: Bindings, teamNumber: number, year?: number): Promise<Response> {
+	const keySuffix = year === undefined ? String(teamNumber) : `${year}/${teamNumber}`;
+	const avatarKey = `avatars/${keySuffix}.png`;
+	const missingKey = `missing/${keySuffix}`;
 	const now = Date.now();
+	const currentYear = new Date(now).getUTCFullYear();
+	const isHistorical = year !== undefined && year < currentYear;
+	const avatarRefreshMs = isHistorical ? HISTORICAL_AVATAR_REFRESH_MS : CURRENT_AVATAR_REFRESH_MS;
+	const missingRefreshMs = isHistorical ? HISTORICAL_MISSING_REFRESH_MS : CURRENT_MISSING_REFRESH_MS;
+	const avatarCacheControl = isHistorical ? HISTORICAL_AVATAR_CACHE_CONTROL : CURRENT_AVATAR_CACHE_CONTROL;
+	const missingCacheControl = isHistorical ? HISTORICAL_MISSING_CACHE_CONTROL : CURRENT_MISSING_CACHE_CONTROL;
 	const storedAvatar = await env.AVATARS.get(avatarKey);
 
-	if (storedAvatar && isFresh(storedAvatar, AVATAR_REFRESH_MS, now)) {
-		return avatarResponse(request, storedAvatar, AVATAR_CACHE_CONTROL);
+	if (storedAvatar && isFresh(storedAvatar, avatarRefreshMs, now)) {
+		return avatarResponse(request, storedAvatar, avatarCacheControl);
 	}
 
 	if (!storedAvatar) {
 		const missing = await env.AVATARS.head(missingKey);
 
-		if (missing && isFresh(missing, MISSING_REFRESH_MS, now)) {
-			return missingResponse(teamNumber);
+		if (missing && isFresh(missing, missingRefreshMs, now)) {
+			return missingResponse(teamNumber, missingCacheControl, year);
 		}
 	}
 
 	try {
-		const fetched = await fetchLatestAvatar(teamNumber, env.TBA_AUTH_KEY, new Date(now).getUTCFullYear());
+		const fetched =
+			year === undefined
+				? await fetchCurrentAvatar(teamNumber, env.TBA_AUTH_KEY, currentYear)
+				: await fetchAvatarForYear(teamNumber, env.TBA_AUTH_KEY, year);
 
 		if (!fetched) {
 			await Promise.all([env.AVATARS.delete(avatarKey), env.AVATARS.put(missingKey, '')]);
-			return missingResponse(teamNumber);
+			return missingResponse(teamNumber, missingCacheControl, year);
 		}
 
 		const stored = await env.AVATARS.put(avatarKey, fetched.bytes, {
 			httpMetadata: {
 				contentType: 'image/png',
-				cacheControl: AVATAR_CACHE_CONTROL,
+				cacheControl: avatarCacheControl,
 			},
 			customMetadata: {
 				sourceYear: String(fetched.year),
@@ -53,12 +68,13 @@ export async function getAvatar(request: Request, env: Bindings, teamNumber: num
 		});
 		await env.AVATARS.delete(missingKey);
 
-		return bytesResponse(request, fetched.bytes, stored, fetched.year, AVATAR_CACHE_CONTROL);
+		return bytesResponse(request, fetched.bytes, stored, fetched.year, avatarCacheControl);
 	} catch (error) {
-		console.error('Failed to refresh avatar', { teamNumber, error });
+		console.error('Failed to refresh avatar', { teamNumber, year, error });
 
 		if (storedAvatar) {
-			return avatarResponse(request, storedAvatar, STALE_AVATAR_CACHE_CONTROL);
+			const staleCacheControl = isHistorical ? HISTORICAL_AVATAR_CACHE_CONTROL : STALE_CURRENT_AVATAR_CACHE_CONTROL;
+			return avatarResponse(request, storedAvatar, staleCacheControl);
 		}
 
 		if (error instanceof UpstreamError) {
@@ -123,9 +139,10 @@ function imageHeaders(
 	};
 }
 
-function missingResponse(teamNumber: number): Response {
+function missingResponse(teamNumber: number, cacheControl: string, year?: number): Response {
+	const yearDescription = year === undefined ? '' : ` in ${year}`;
 	return Response.json(
-		{ error: `No avatar is available for team ${teamNumber}.` },
-		{ status: 404, headers: { 'Cache-Control': MISSING_CACHE_CONTROL } },
+		{ error: `No avatar is available for team ${teamNumber}${yearDescription}.` },
+		{ status: 404, headers: { 'Cache-Control': cacheControl } },
 	);
 }

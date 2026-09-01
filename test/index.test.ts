@@ -25,6 +25,19 @@ describe('routing', () => {
 		expect(await response.json()).toEqual({ error: 'Invalid team number.' });
 	});
 
+	it.each(['1991', String(new Date().getUTCFullYear() + 1), 'not-a-year'])(
+		'rejects invalid avatar year %s',
+		async (year) => {
+			const response = await worker.fetch(
+				new Request(`https://avatars.frc.sh/teams/${year}/581.png`),
+				env as Bindings,
+				createExecutionContext(),
+			);
+
+			expect(response.status).toBe(400);
+		},
+	);
+
 	it('serves an OpenAPI document for the public routes', async () => {
 		const response = await worker.fetch(
 			new Request('https://avatars.frc.sh/openapi.json'),
@@ -37,8 +50,8 @@ describe('routing', () => {
 		};
 
 		expect(response.status).toBe(200);
-		expect(document.openapi).toBe('3.0.0');
-		expect(Object.keys(document.paths)).toEqual(['/', '/health', '/teams/{filename}']);
+		expect(document.openapi).toBe('3.1.0');
+		expect(Object.keys(document.paths)).toEqual(['/', '/health', '/teams/{filename}', '/teams/{year}/{filename}']);
 		expect(document.paths['/teams/{filename}']).toMatchObject({
 			get: {
 				parameters: [{ in: 'path', name: 'filename', required: true }],
@@ -47,6 +60,14 @@ describe('routing', () => {
 						content: { 'image/png': { schema: { type: 'string', format: 'binary' } } },
 					},
 				},
+			},
+		});
+		expect(document.paths['/teams/{year}/{filename}']).toMatchObject({
+			get: {
+				parameters: [
+					{ in: 'path', name: 'year', required: true },
+					{ in: 'path', name: 'filename', required: true },
+				],
 			},
 		});
 	});
@@ -66,6 +87,7 @@ describe('avatar endpoint', () => {
 		const first = await requestAvatar(581);
 		expect(first.status).toBe(200);
 		expect(first.headers.get('Content-Type')).toBe('image/png');
+		expect(first.headers.get('Cache-Control')).toContain('s-maxage=86400');
 		expect(new Uint8Array(await first.arrayBuffer()).slice(0, 4)).toEqual(new Uint8Array([0x89, 0x50, 0x4e, 0x47]));
 
 		const stored = await env.AVATARS.get('avatars/581.png');
@@ -73,6 +95,32 @@ describe('avatar endpoint', () => {
 		await stored?.arrayBuffer();
 
 		const second = await requestAvatar(581);
+		expect(second.status).toBe(200);
+		await second.arrayBuffer();
+		expect(requests).toBe(1);
+	});
+
+	it('fetches and caches an avatar for an explicit year', async () => {
+		let requests = 0;
+		network.use(
+			http.get('https://www.thebluealliance.com/api/v3/team/frc581/media/:year', ({ params }) => {
+				requests += 1;
+				expect(params.year).toBe('2024');
+				return HttpResponse.json([{ type: 'avatar', details: { base64Image: PNG_BASE64 } }]);
+			}),
+		);
+
+		const first = await requestAvatar(581, 2024);
+		expect(first.status).toBe(200);
+		expect(first.headers.get('X-Avatar-Year')).toBe('2024');
+		expect(first.headers.get('Cache-Control')).toContain('s-maxage=2592000');
+		await first.arrayBuffer();
+
+		const stored = await env.AVATARS.get('avatars/2024/581.png');
+		expect(stored).not.toBeNull();
+		await stored?.arrayBuffer();
+
+		const second = await requestAvatar(581, 2024);
 		expect(second.status).toBe(200);
 		await second.arrayBuffer();
 		expect(requests).toBe(1);
@@ -151,10 +199,7 @@ describe('avatar endpoint', () => {
 	});
 });
 
-async function requestAvatar(teamNumber: number): Promise<Response> {
-	return worker.fetch(
-		new Request(`https://avatars.frc.sh/teams/${teamNumber}.png`),
-		env as Bindings,
-		createExecutionContext(),
-	);
+async function requestAvatar(teamNumber: number, year?: number): Promise<Response> {
+	const path = year === undefined ? `${teamNumber}.png` : `${year}/${teamNumber}.png`;
+	return worker.fetch(new Request(`https://avatars.frc.sh/teams/${path}`), env as Bindings, createExecutionContext());
 }
