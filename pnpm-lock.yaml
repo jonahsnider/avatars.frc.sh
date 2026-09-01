@@ -109,6 +109,9 @@ importers:
 
   .:
     dependencies:
+      fetch-extras:
+        specifier: 3.2.1
+        version: 3.2.1
       hono:
         specifier: 4.13.5
         version: 4.13.5
@@ -1081,6 +1084,10 @@ packages:
     peerDependenciesMeta:
       picomatch:
         optional: true
+
+  fetch-extras@3.2.1:
+    resolution: {integrity: sha512-MuxNR+WUQiu6i4xEDrtoSzSwoqDR2QhN8KU5jlFdAyM3aJmPYwOVC/PwkL5tqyzFMoxz9aGzYyPKRrnSkJQsEA==}
+    engines: {node: '>=22'}
 
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -2139,6 +2146,8 @@ snapshots:
   fdir@6.5.0(picomatch@4.0.7):
     optionalDependencies:
       picomatch: 4.0.7
+
+  fetch-extras@3.2.1: {}
 
   fsevents@2.3.3:
     optional: true

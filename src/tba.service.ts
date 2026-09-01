@@ -1,4 +1,15 @@
+import {
+	HttpError,
+	pipeline,
+	withBaseUrl,
+	withHeaders,
+	withHttpError,
+	withJsonResponse,
+	withTimeout,
+} from 'fetch-extras';
+
 const TBA_API_URL = 'https://www.thebluealliance.com/api/v3';
+const TBA_TIMEOUT_MS = 10_000;
 const MAX_AVATAR_BYTES = 1024 * 1024;
 
 type TbaMedia = {
@@ -15,20 +26,30 @@ export async function fetchLatestAvatar(
 	authKey: string,
 	currentYear: number,
 ): Promise<{ bytes: Uint8Array; year: number } | undefined> {
+	const tbaFetch = pipeline(
+		fetch,
+		withTimeout(TBA_TIMEOUT_MS),
+		withBaseUrl(TBA_API_URL),
+		withHeaders({ 'X-TBA-Auth-Key': authKey }),
+		withHttpError(),
+		withJsonResponse(),
+	);
+
 	for (const year of [currentYear, currentYear - 1]) {
-		const response = await fetch(`${TBA_API_URL}/team/frc${teamNumber}/media/${year}`, {
-			headers: { 'X-TBA-Auth-Key': authKey },
-		});
+		let body: unknown;
+		try {
+			body = await tbaFetch(`team/frc${teamNumber}/media/${year}`);
+		} catch (error) {
+			if (error instanceof HttpError && error.response.status === 404) {
+				continue;
+			}
 
-		if (response.status === 404) {
-			continue;
+			if (error instanceof HttpError) {
+				throw new UpstreamError(`TBA returned ${error.response.status}.`, { cause: error });
+			}
+
+			throw error;
 		}
-
-		if (!response.ok) {
-			throw new UpstreamError(`TBA returned ${response.status}.`);
-		}
-
-		const body: unknown = await response.json();
 
 		if (!Array.isArray(body)) {
 			throw new UpstreamError('TBA returned an invalid media response.');
