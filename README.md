@@ -18,7 +18,7 @@ GET https://avatars.frc.sh/teams/2024/581.png
 
 The historical endpoint checks only the requested season. Years from 1992 through the current year are accepted.
 
-Successful responses include an `X-Avatar-Year` header with the source year. Current avatars refresh daily, while completed seasons refresh every 30 days. Missing current avatars are cached for six hours; missing historical avatars are cached for seven days.
+Successful responses include an `X-Avatar-Year` header with the source year. See [Cache behavior](#cache-behavior) for refresh and negative-cache timing.
 
 The OpenAPI 3.1.0 document is available at [`/openapi.json`](https://avatars.frc.sh/openapi.json).
 
@@ -62,13 +62,22 @@ pnpm deploy
 
 The custom domain must not already have a conflicting DNS record. Wrangler creates the required DNS record and certificate during deployment.
 
-## Refresh behavior
+## Cache behavior
+
+| Cached result     | Example R2 key         | Browser TTL | Cloudflare TTL / TBA recheck | Stale while refreshing | Stale if TBA fails |
+| ----------------- | ---------------------- | ----------- | ---------------------------- | ---------------------- | ------------------ |
+| Current avatar    | `avatars/581.png`      | 1 hour      | 1 day                        | 1 day                  | 7 days             |
+| Historical avatar | `avatars/2024/581.png` | 1 day       | 30 days                      | 7 days                 | 1 year             |
+| Current `404`     | `missing/581`          | 5 minutes   | 6 hours                      | 1 hour                 | —                  |
+| Historical `404`  | `missing/2024/581`     | 1 hour      | 7 days                       | 1 day                  | —                  |
+
+The browser TTL is the response's `max-age`. Cloudflare uses `s-maxage`; after that same freshness window, the Worker checks the R2 object's age and revalidates it with TBA. R2 objects and missing markers are retained until they are refreshed or replaced rather than expiring automatically.
 
 There is intentionally no daily bulk job. A bulk refresh would issue thousands of mostly unnecessary TBA requests. Instead:
 
 1. The first request for a team fetches its avatar from TBA and stores it in R2.
 2. Workers Cache serves subsequent requests without running the Worker.
-3. After one day, Cloudflare serves the stale image while the Worker refreshes it in the background.
+3. After the applicable freshness window, Cloudflare can serve the stale response while the Worker refreshes it in the background.
 4. Missing avatars use a short negative-cache marker in R2 so repeated requests do not hit TBA.
 
 Current and year-specific avatars use separate R2 keys and negative-cache markers. Requesting a historical avatar never changes the default current avatar.
