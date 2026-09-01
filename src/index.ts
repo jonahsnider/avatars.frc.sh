@@ -102,7 +102,7 @@ app.openapi(rootRoute, (context) => {
 	context.header('Cache-Control', JSON_CACHE_CONTROL);
 	return context.json(
 		{
-			name: 'FRC Avatars',
+			name: 'avatars.frc.sh',
 			imageUrlTemplate: `${new URL(context.req.url).origin}/teams/{teamNumber}.png`,
 			source: 'The Blue Alliance',
 		},
