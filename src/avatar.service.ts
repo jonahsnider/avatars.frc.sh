@@ -1,3 +1,4 @@
+import { captureException } from '@sentry/cloudflare';
 import { fetchAvatar as fetchAvatarForYear, fetchCurrentAvatar, UpstreamError } from './tba.service';
 
 const CURRENT_AVATAR_REFRESH_MS = 24 * 60 * 60 * 1000;
@@ -71,6 +72,7 @@ export async function getAvatar(request: Request, env: Bindings, teamNumber: num
 		return bytesResponse(request, fetched.bytes, stored, fetched.year, avatarCacheControl);
 	} catch (error) {
 		console.error('Failed to refresh avatar', { teamNumber, year, error });
+		captureException(error, { extra: { teamNumber, year } });
 
 		if (storedAvatar) {
 			return avatarResponse(request, storedAvatar, avatarCacheControl);
