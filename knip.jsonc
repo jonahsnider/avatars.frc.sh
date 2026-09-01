@@ -1,0 +1,5 @@
+{
+	"$schema": "./node_modules/knip/schema.json",
+	// cloudflare:test is provided by @cloudflare/vitest-plugin
+	"ignoreDependencies": ["cloudflare"],
+}
