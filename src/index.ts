@@ -126,15 +126,15 @@ app.use('/openapi.json', async (context, next) => {
 	context.header('Cache-Control', JSON_CACHE_CONTROL);
 });
 
-app.doc31('/openapi.json', {
+app.doc31('/openapi.json', (context) => ({
 	openapi: '3.1.0',
 	info: {
 		title: 'avatars.frc.sh',
-		version: '1.0.0',
-		description: 'Latest FIRST Robotics Competition team avatars sourced from The Blue Alliance.',
+		version: context.env.CF_VERSION_METADATA.id,
+		description: 'FIRST Robotics Competition team avatars sourced from The Blue Alliance.',
 	},
 	servers: [{ url: 'https://avatars.frc.sh' }],
-});
+}));
 
 app.notFound((context) => {
 	context.header('Cache-Control', JSON_CACHE_CONTROL);
