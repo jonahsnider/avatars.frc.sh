@@ -1,0 +1,66 @@
+# FRC Avatars
+
+A small public API for the latest FRC team avatars published by [The Blue Alliance](https://www.thebluealliance.com/). Avatars are fetched on demand, persisted in Cloudflare R2, and served through Cloudflare Workers Cache.
+
+## API
+
+```http
+GET https://avatars.frc.sh/teams/581.png
+```
+
+The endpoint returns the latest avatar found in the current FRC year, falling back to the previous year. It returns `404` when no avatar is available.
+
+Successful responses include an `X-Avatar-Year` header with the source year. Images refresh daily. Missing avatars are cached for six hours.
+
+## Development
+
+Requires Node.js 24 and pnpm 12.
+
+```sh
+pnpm install
+cp .dev.vars.example .dev.vars
+pnpm dev
+```
+
+Set `TBA_AUTH_KEY` in `.dev.vars` to a [The Blue Alliance API key](https://www.thebluealliance.com/account).
+
+Run the complete local check with:
+
+```sh
+pnpm check
+```
+
+## Deploying
+
+Create the production R2 bucket once:
+
+```sh
+pnpm exec wrangler r2 bucket create frc-avatars
+```
+
+Configure the production secret:
+
+```sh
+pnpm exec wrangler secret put TBA_AUTH_KEY
+```
+
+Then deploy the Worker and its `avatars.frc.sh` custom domain:
+
+```sh
+pnpm deploy
+```
+
+The custom domain must not already have a conflicting DNS record. Wrangler creates the required DNS record and certificate during deployment.
+
+## Refresh behavior
+
+There is intentionally no daily bulk job. A bulk refresh would issue thousands of mostly unnecessary TBA requests. Instead:
+
+1. The first request for a team fetches its avatar from TBA and stores it in R2.
+2. Workers Cache serves subsequent requests without running the Worker.
+3. After one day, Cloudflare serves the stale image while the Worker refreshes it in the background.
+4. Missing avatars use a short negative-cache marker in R2 so repeated requests do not hit TBA.
+
+Only the latest avatar is exposed. Historical avatars are not part of the API contract.
+
+Workers Cache is enabled in `wrangler.jsonc` and caches responses before the Worker executes. Hono's cache middleware is intentionally not used because it relies on the lower-level, data-center-local Cache API and would duplicate this cache layer.

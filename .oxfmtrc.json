@@ -1,0 +1,6 @@
+{
+	"ignorePatterns": ["pnpm-lock.yaml", "worker-configuration.d.ts"],
+	"singleQuote": true,
+	"useTabs": true,
+	"printWidth": 120
+}

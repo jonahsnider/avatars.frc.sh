@@ -1,0 +1,23 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "avatars-frc-sh",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-09-01",
+	"workers_dev": false,
+	"cache": {
+		"enabled": true,
+	},
+	"route": {
+		"pattern": "avatars.frc.sh",
+		"custom_domain": true,
+	},
+	"r2_buckets": [
+		{
+			"binding": "AVATARS",
+			"bucket_name": "frc-avatars",
+		},
+	],
+	"observability": {
+		"enabled": true,
+	},
+}
