@@ -20,6 +20,8 @@ The historical endpoint checks only the requested season. Years from 1992 throug
 
 Successful responses include an `X-Avatar-Year` header with the source year. See [Cache behavior](#cache-behavior) for refresh and negative-cache timing.
 
+Avatar payloads are validated with Cloudflare Images. Supported non-PNG images are converted to PNG before being stored in R2, and an unusable current-year image falls back to the previous year.
+
 The OpenAPI 3.1.0 document is available at [`/openapi.json`](https://avatars.frc.sh/openapi.json).
 
 ## Development

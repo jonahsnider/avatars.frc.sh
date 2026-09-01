@@ -1,17 +1,21 @@
 import { env } from 'cloudflare:workers';
 import { createExecutionContext } from 'cloudflare:test';
 import { http, HttpResponse } from 'msw';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { type Bindings } from '../src/avatar.service';
 import worker from '../src/index';
 import { network } from './network';
 
 const PNG_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
+const JPEG_BASE64 =
+	'/9j/4AAQSkZJRgABAgAAAQABAAD//gAPTGF2YzYzLjEuMTAxAP/bAEMACAQEBAQEBQUFBQUFBgYGBgYGBgYGBgYGBgcHBwgICAcHBwYGBwcICAgICQkJCAgICAkJCgoKDAwLCw4ODhERFP/EAEwAAQEAAAAAAAAAAAAAAAAAAAAGAQEBAAAAAAAAAAAAAAAAAAAGBxABAAAAAAAAAAAAAAAAAAAAABEBAAAAAAAAAAAAAAAAAAAAAP/AABEIAAIAAgMBIgACEQADEQD/2gAMAwEAAhEDEQA/AIsATX9//9k=';
 
 beforeEach(async () => {
 	const objects = await env.AVATARS.list();
 	await Promise.all(objects.objects.map((object) => env.AVATARS.delete(object.key)));
 });
+
+afterEach(() => vi.restoreAllMocks());
 
 describe('routing', () => {
 	it.each(['0', '0501', '50001', 'not-a-team'])('rejects invalid team number %s', async (teamNumber) => {
@@ -99,6 +103,66 @@ describe('avatar endpoint', () => {
 		const second = await requestAvatar(581);
 		expect(second.status).toBe(200);
 		await second.arrayBuffer();
+		expect(requests).toBe(1);
+	});
+
+	it('normalizes a JPEG avatar from TBA to PNG', async () => {
+		network.use(
+			http.get('https://www.thebluealliance.com/api/v3/team/frc7431/media/:year', () =>
+				HttpResponse.json([{ type: 'avatar', details: { base64Image: JPEG_BASE64 } }]),
+			),
+		);
+
+		const response = await requestAvatar(7431);
+		const bytes = new Uint8Array(await response.arrayBuffer());
+
+		expect(response.status).toBe(200);
+		expect(response.headers.get('Content-Type')).toBe('image/png');
+		expect(bytes.slice(0, 8)).toEqual(new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
+
+		const stored = await env.AVATARS.get('avatars/7431.png');
+		expect(new Uint8Array(await stored!.arrayBuffer()).slice(0, 8)).toEqual(
+			new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+		);
+	});
+
+	it('falls back to the previous year when the current avatar is invalid', async () => {
+		const currentYear = new Date().getUTCFullYear();
+		const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+		network.use(
+			http.get('https://www.thebluealliance.com/api/v3/team/frc7431/media/:year', ({ params }) =>
+				HttpResponse.json([
+					{
+						type: 'avatar',
+						details: { base64Image: params.year === String(currentYear) ? 'not base64' : PNG_BASE64 },
+					},
+				]),
+			),
+		);
+
+		const response = await requestAvatar(7431);
+
+		expect(response.status).toBe(200);
+		expect(response.headers.get('X-Avatar-Year')).toBe(String(currentYear - 1));
+		expect(consoleError).toHaveBeenCalledWith(
+			'Skipped invalid TBA avatar',
+			expect.objectContaining({ teamNumber: 7431, year: currentYear }),
+		);
+	});
+
+	it('does not fall back when an explicit year has an invalid avatar', async () => {
+		let requests = 0;
+		vi.spyOn(console, 'error').mockImplementation(() => undefined);
+		network.use(
+			http.get('https://www.thebluealliance.com/api/v3/team/frc7431/media/:year', () => {
+				requests += 1;
+				return HttpResponse.json([{ type: 'avatar', details: { base64Image: 'not base64' } }]);
+			}),
+		);
+
+		const response = await requestAvatar(7431, 2024);
+
+		expect(response.status).toBe(502);
 		expect(requests).toBe(1);
 	});
 
