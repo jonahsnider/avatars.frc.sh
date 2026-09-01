@@ -24,6 +24,32 @@ describe('routing', () => {
 		expect(response.status).toBe(400);
 		expect(await response.json()).toEqual({ error: 'Invalid team number.' });
 	});
+
+	it('serves an OpenAPI document for the public routes', async () => {
+		const response = await worker.fetch(
+			new Request('https://avatars.frc.sh/openapi.json'),
+			env as Bindings,
+			createExecutionContext(),
+		);
+		const document = (await response.json()) as {
+			openapi: string;
+			paths: Record<string, unknown>;
+		};
+
+		expect(response.status).toBe(200);
+		expect(document.openapi).toBe('3.0.0');
+		expect(Object.keys(document.paths)).toEqual(['/', '/health', '/teams/{filename}']);
+		expect(document.paths['/teams/{filename}']).toMatchObject({
+			get: {
+				parameters: [{ in: 'path', name: 'filename', required: true }],
+				responses: {
+					200: {
+						content: { 'image/png': { schema: { type: 'string', format: 'binary' } } },
+					},
+				},
+			},
+		});
+	});
 });
 
 describe('avatar endpoint', () => {

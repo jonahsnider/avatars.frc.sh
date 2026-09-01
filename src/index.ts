@@ -1,12 +1,89 @@
-import { Hono } from 'hono';
+import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi';
 import { cors } from 'hono/cors';
 import { secureHeaders } from 'hono/secure-headers';
 import { getAvatar, type Bindings } from './avatar.service';
 
 const JSON_CACHE_CONTROL = 'public, max-age=3600, s-maxage=86400';
-const MAX_TEAM_NUMBER = 50_000;
+const TEAM_FILENAME_PATTERN = /^(?:[1-9]\d{0,3}|[1-4]\d{4}|50000)\.png$/;
 
-const app = new Hono<{ Bindings: Bindings }>();
+const errorSchema = z.object({ error: z.string() }).openapi('Error');
+const serviceSchema = z
+	.object({
+		name: z.string(),
+		imageUrlTemplate: z.url(),
+		source: z.string(),
+	})
+	.openapi('Service');
+const healthSchema = z.object({ status: z.literal('ok') }).openapi('Health');
+const teamParamsSchema = z.object({
+	filename: z
+		.string()
+		.regex(TEAM_FILENAME_PATTERN)
+		.openapi({
+			param: { name: 'filename', in: 'path' },
+			example: '581.png',
+		}),
+});
+
+const rootRoute = createRoute({
+	method: 'get',
+	path: '/',
+	responses: {
+		200: {
+			content: { 'application/json': { schema: serviceSchema } },
+			description: 'Service information',
+		},
+	},
+});
+
+const healthRoute = createRoute({
+	method: 'get',
+	path: '/health',
+	responses: {
+		200: {
+			content: { 'application/json': { schema: healthSchema } },
+			description: 'Service health',
+		},
+	},
+});
+
+const avatarRoute = createRoute({
+	method: 'get',
+	path: '/teams/{filename}',
+	request: { params: teamParamsSchema },
+	responses: {
+		200: {
+			content: { 'image/png': { schema: z.string().openapi({ format: 'binary' }) } },
+			description: 'The latest team avatar',
+		},
+		304: { description: 'The cached avatar is still current' },
+		400: {
+			content: { 'application/json': { schema: errorSchema } },
+			description: 'Invalid team filename',
+		},
+		404: {
+			content: { 'application/json': { schema: errorSchema } },
+			description: 'No avatar is available for the team',
+		},
+		500: {
+			content: { 'application/json': { schema: errorSchema } },
+			description: 'The avatar could not be loaded',
+		},
+		502: {
+			content: { 'application/json': { schema: errorSchema } },
+			description: 'The avatar source is temporarily unavailable',
+		},
+	},
+});
+
+const app = new OpenAPIHono<{ Bindings: Bindings }>({
+	defaultHook(result, context) {
+		if (!result.success) {
+			context.header('Cache-Control', JSON_CACHE_CONTROL);
+			return context.json({ error: 'Invalid team number.' }, 400);
+		}
+	},
+});
 
 app.use(
 	'*',
@@ -21,30 +98,42 @@ app.use(
 
 app.use('*', secureHeaders({ crossOriginResourcePolicy: 'cross-origin' }));
 
-app.get('/', (context) => {
+app.openapi(rootRoute, (context) => {
 	context.header('Cache-Control', JSON_CACHE_CONTROL);
-	return context.json({
-		name: 'FRC Avatars',
-		imageUrlTemplate: `${new URL(context.req.url).origin}/teams/{teamNumber}.png`,
-		source: 'The Blue Alliance',
-	});
+	return context.json(
+		{
+			name: 'FRC Avatars',
+			imageUrlTemplate: `${new URL(context.req.url).origin}/teams/{teamNumber}.png`,
+			source: 'The Blue Alliance',
+		},
+		200,
+	);
 });
 
-app.get('/health', (context) => {
+app.openapi(healthRoute, (context) => {
 	context.header('Cache-Control', 'no-store');
-	return context.json({ status: 'ok' });
+	return context.json({ status: 'ok' }, 200);
 });
 
-app.get('/teams/:filename{.+\\.png}', async (context) => {
-	const filename = context.req.param('filename');
-	const teamNumber = parseTeamNumber(filename.slice(0, -'.png'.length));
-
-	if (teamNumber === undefined) {
-		context.header('Cache-Control', JSON_CACHE_CONTROL);
-		return context.json({ error: 'Invalid team number.' }, 400);
-	}
-
+app.openapi(avatarRoute, async (context) => {
+	const filename = context.req.valid('param').filename;
+	const teamNumber = Number(filename.slice(0, -'.png'.length));
 	return getAvatar(context.req.raw, context.env, teamNumber);
+});
+
+app.use('/openapi.json', async (context, next) => {
+	await next();
+	context.header('Cache-Control', JSON_CACHE_CONTROL);
+});
+
+app.doc31('/openapi.json', {
+	openapi: '3.1.0',
+	info: {
+		title: 'avatars.frc.sh',
+		version: '1.0.0',
+		description: 'Latest FIRST Robotics Competition team avatars sourced from The Blue Alliance.',
+	},
+	servers: [{ url: 'https://avatars.frc.sh' }],
 });
 
 app.notFound((context) => {
@@ -57,15 +146,5 @@ app.onError((error, context) => {
 	context.header('Cache-Control', 'no-store');
 	return context.json({ error: 'Internal server error.' }, 500);
 });
-
-function parseTeamNumber(value: string): number | undefined {
-	const teamNumber = Number(value);
-
-	if (!Number.isInteger(teamNumber) || teamNumber < 1 || teamNumber > MAX_TEAM_NUMBER) {
-		return undefined;
-	}
-
-	return String(teamNumber) === value ? teamNumber : undefined;
-}
 
 export default app;

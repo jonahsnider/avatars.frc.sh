@@ -1,4 +1,4 @@
-# FRC Avatars
+# avatars.frc.sh
 
 A small public API for the latest FRC team avatars published by [The Blue Alliance](https://www.thebluealliance.com/). Avatars are fetched on demand, persisted in Cloudflare R2, and served through Cloudflare Workers Cache.
 
@@ -11,6 +11,8 @@ GET https://avatars.frc.sh/teams/581.png
 The endpoint returns the latest avatar found in the current FRC year, falling back to the previous year. It returns `404` when no avatar is available.
 
 Successful responses include an `X-Avatar-Year` header with the source year. Images refresh daily. Missing avatars are cached for six hours.
+
+The OpenAPI 3.1.0 document is available at [`/openapi.json`](https://avatars.frc.sh/openapi.json).
 
 ## Development
 
