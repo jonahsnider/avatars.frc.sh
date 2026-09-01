@@ -1,5 +1,6 @@
 import {
 	HttpError,
+	SchemaValidationError,
 	pipeline,
 	withBaseUrl,
 	withHeaders,
@@ -7,17 +8,20 @@ import {
 	withJsonResponse,
 	withTimeout,
 } from 'fetch-extras';
+import * as z from 'zod/mini';
 
 const TBA_API_URL = 'https://www.thebluealliance.com/api/v3';
 const TBA_TIMEOUT_MS = 10_000;
 const MAX_AVATAR_BYTES = 1024 * 1024;
 
-type TbaMedia = {
-	type?: unknown;
-	details?: {
-		base64Image?: unknown;
-	};
-};
+const tbaMediaSchema = z.array(
+	z.object({
+		type: z.string(),
+		details: z.object({
+			base64Image: z.optional(z.string()),
+		}),
+	}),
+);
 
 export class UpstreamError extends Error {}
 
@@ -32,11 +36,11 @@ export async function fetchLatestAvatar(
 		withBaseUrl(TBA_API_URL),
 		withHeaders({ 'X-TBA-Auth-Key': authKey }),
 		withHttpError(),
-		withJsonResponse(),
+		withJsonResponse({ schema: tbaMediaSchema }),
 	);
 
 	for (const year of [currentYear, currentYear - 1]) {
-		let body: unknown;
+		let body: z.infer<typeof tbaMediaSchema>;
 		try {
 			body = await tbaFetch(`team/frc${teamNumber}/media/${year}`);
 		} catch (error) {
@@ -48,20 +52,17 @@ export async function fetchLatestAvatar(
 				throw new UpstreamError(`TBA returned ${error.response.status}.`, { cause: error });
 			}
 
+			if (error instanceof SchemaValidationError || error instanceof SyntaxError) {
+				throw new UpstreamError('TBA returned an invalid media response.', { cause: error });
+			}
+
 			throw error;
 		}
 
-		if (!Array.isArray(body)) {
-			throw new UpstreamError('TBA returned an invalid media response.');
-		}
-
-		const avatar = body.find(
-			(media): media is TbaMedia =>
-				typeof media === 'object' && media !== null && (media as TbaMedia).type === 'avatar',
-		);
+		const avatar = body.find((media) => media.type === 'avatar');
 		const encoded = avatar?.details?.base64Image;
 
-		if (typeof encoded === 'string') {
+		if (encoded !== undefined) {
 			return { bytes: decodePng(encoded), year };
 		}
 	}

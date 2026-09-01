@@ -72,6 +72,19 @@ describe('avatar endpoint', () => {
 		expect(await env.AVATARS.head('missing/9999')).not.toBeNull();
 	});
 
+	it('rejects invalid TBA media responses', async () => {
+		network.use(
+			http.get('https://www.thebluealliance.com/api/v3/team/frc581/media/:year', () =>
+				HttpResponse.json([{ type: 'avatar', details: { base64Image: 123 } }]),
+			),
+		);
+
+		const response = await requestAvatar(581);
+
+		expect(response.status).toBe(502);
+		expect(await response.json()).toEqual({ error: 'The avatar source is temporarily unavailable.' });
+	});
+
 	it('supports conditional requests for stored avatars', async () => {
 		const bytes = Uint8Array.from(atob(PNG_BASE64), (character) => character.charCodeAt(0));
 		const stored = await env.AVATARS.put('avatars/581.png', bytes, {
