@@ -2,16 +2,15 @@ import { fetchAvatar as fetchAvatarForYear, fetchCurrentAvatar, UpstreamError } 
 
 const CURRENT_AVATAR_REFRESH_MS = 24 * 60 * 60 * 1000;
 const HISTORICAL_AVATAR_REFRESH_MS = 30 * 24 * 60 * 60 * 1000;
-const CURRENT_MISSING_REFRESH_MS = 6 * 60 * 60 * 1000;
+const CURRENT_MISSING_REFRESH_MS = 24 * 60 * 60 * 1000;
 const HISTORICAL_MISSING_REFRESH_MS = 7 * 24 * 60 * 60 * 1000;
 
 const CURRENT_AVATAR_CACHE_CONTROL =
-	'public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400, stale-if-error=604800';
+	'public, max-age=86400, s-maxage=86400, stale-while-revalidate=86400, stale-if-error=604800';
 const HISTORICAL_AVATAR_CACHE_CONTROL =
 	'public, max-age=86400, s-maxage=2592000, stale-while-revalidate=604800, stale-if-error=31536000';
-const STALE_CURRENT_AVATAR_CACHE_CONTROL = 'public, max-age=60, s-maxage=300, stale-if-error=604800';
-const CURRENT_MISSING_CACHE_CONTROL = 'public, max-age=300, s-maxage=21600, stale-while-revalidate=3600';
-const HISTORICAL_MISSING_CACHE_CONTROL = 'public, max-age=3600, s-maxage=604800, stale-while-revalidate=86400';
+const CURRENT_MISSING_CACHE_CONTROL = 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=86400';
+const HISTORICAL_MISSING_CACHE_CONTROL = 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400';
 
 export type Bindings = Env & {
 	TBA_AUTH_KEY: string;
@@ -73,8 +72,7 @@ export async function getAvatar(request: Request, env: Bindings, teamNumber: num
 		console.error('Failed to refresh avatar', { teamNumber, year, error });
 
 		if (storedAvatar) {
-			const staleCacheControl = isHistorical ? HISTORICAL_AVATAR_CACHE_CONTROL : STALE_CURRENT_AVATAR_CACHE_CONTROL;
-			return avatarResponse(request, storedAvatar, staleCacheControl);
+			return avatarResponse(request, storedAvatar, avatarCacheControl);
 		}
 
 		if (error instanceof UpstreamError) {

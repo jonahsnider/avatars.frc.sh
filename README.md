@@ -66,10 +66,10 @@ The custom domain must not already have a conflicting DNS record. Wrangler creat
 
 | Cached result     | Example R2 key         | Browser TTL | Cloudflare TTL / TBA recheck | Stale while refreshing | Stale if TBA fails |
 | ----------------- | ---------------------- | ----------- | ---------------------------- | ---------------------- | ------------------ |
-| Current avatar    | `avatars/581.png`      | 1 hour      | 1 day                        | 1 day                  | 7 days             |
+| Current avatar    | `avatars/581.png`      | 1 day       | 1 day                        | 1 day                  | 7 days             |
 | Historical avatar | `avatars/2024/581.png` | 1 day       | 30 days                      | 7 days                 | 1 year             |
-| Current `404`     | `missing/581`          | 5 minutes   | 6 hours                      | 1 hour                 | —                  |
-| Historical `404`  | `missing/2024/581`     | 1 hour      | 7 days                       | 1 day                  | —                  |
+| Current `404`     | `missing/581`          | 1 day       | 1 day                        | 1 day                  | —                  |
+| Historical `404`  | `missing/2024/581`     | 1 day       | 7 days                       | 1 day                  | —                  |
 
 The browser TTL is the response's `max-age`. Cloudflare uses `s-maxage`; after that same freshness window, the Worker checks the R2 object's age and revalidates it with TBA. R2 objects and missing markers are retained until they are refreshed or replaced rather than expiring automatically.
 

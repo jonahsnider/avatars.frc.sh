@@ -87,7 +87,9 @@ describe('avatar endpoint', () => {
 		const first = await requestAvatar(581);
 		expect(first.status).toBe(200);
 		expect(first.headers.get('Content-Type')).toBe('image/png');
-		expect(first.headers.get('Cache-Control')).toContain('s-maxage=86400');
+		expect(first.headers.get('Cache-Control')?.split(', ')).toEqual(
+			expect.arrayContaining(['max-age=86400', 's-maxage=86400']),
+		);
 		expect(new Uint8Array(await first.arrayBuffer()).slice(0, 4)).toEqual(new Uint8Array([0x89, 0x50, 0x4e, 0x47]));
 
 		const stored = await env.AVATARS.get('avatars/581.png');
@@ -137,6 +139,9 @@ describe('avatar endpoint', () => {
 
 		const first = await requestAvatar(9999);
 		expect(first.status).toBe(404);
+		expect(first.headers.get('Cache-Control')?.split(', ')).toEqual(
+			expect.arrayContaining(['max-age=86400', 's-maxage=86400']),
+		);
 		await first.text();
 
 		const second = await requestAvatar(9999);
