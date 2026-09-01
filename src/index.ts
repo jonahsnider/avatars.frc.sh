@@ -1,4 +1,5 @@
 import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi';
+import { sentry } from '@sentry/hono/cloudflare';
 import { cors } from 'hono/cors';
 import { secureHeaders } from 'hono/secure-headers';
 import { getAvatar, type Bindings } from './avatar.service';
@@ -115,6 +116,13 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>({
 
 app.use(
 	'*',
+	sentry(app, (env) => ({
+		dsn: env.SENTRY_DSN,
+	})),
+);
+
+app.use(
+	'*',
 	cors({
 		origin: '*',
 		allowMethods: ['GET', 'HEAD', 'OPTIONS'],
@@ -142,6 +150,10 @@ app.openapi(rootRoute, (context) => {
 app.openapi(healthRoute, (context) => {
 	context.header('Cache-Control', 'no-store');
 	return context.json({ status: 'ok' }, 200);
+});
+
+app.get('/debug-sentry', () => {
+	throw new Error('My first Sentry error!');
 });
 
 app.openapi(currentAvatarRoute, async (context) => {

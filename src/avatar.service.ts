@@ -13,6 +13,7 @@ const CURRENT_MISSING_CACHE_CONTROL = 'public, max-age=86400, s-maxage=86400, st
 const HISTORICAL_MISSING_CACHE_CONTROL = 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400';
 
 export type Bindings = Env & {
+	SENTRY_DSN: string;
 	TBA_AUTH_KEY: string;
 };
 

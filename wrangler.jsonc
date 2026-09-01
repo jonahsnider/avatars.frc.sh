@@ -4,6 +4,7 @@
 		"enabled": true,
 	},
 	"compatibility_date": "2026-09-01",
+	"compatibility_flags": ["nodejs_compat"],
 	"main": "src/index.ts",
 	"name": "avatars-frc-sh",
 	"observability": {
