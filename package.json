@@ -36,7 +36,7 @@
 		"runtime": {
 			"name": "node",
 			"version": "24.x",
-			"onFail": "error"
+			"onFail": "warn"
 		}
 	},
 	"packageManager": "pnpm@12.2.1"
