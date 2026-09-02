@@ -212,7 +212,9 @@ describe('avatar endpoint', () => {
 		expect(second.status).toBe(404);
 		await second.text();
 		expect(requests).toBe(2);
-		expect(await env.AVATARS.head('missing/9999')).not.toBeNull();
+		const stored = await env.AVATARS.get('avatars/9999.png');
+		expect(stored?.customMetadata?.missing).toBe('true');
+		await stored?.arrayBuffer();
 	});
 
 	it('rejects invalid TBA media responses', async () => {

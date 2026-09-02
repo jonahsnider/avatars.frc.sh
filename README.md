@@ -70,8 +70,8 @@ The custom domain must not already have a conflicting DNS record. Wrangler creat
 | ----------------- | ---------------------- | ----------- | ---------------------------- | ---------------------- | ------------------ |
 | Current avatar    | `avatars/581.png`      | 1 day       | 1 day                        | 1 day                  | 7 days             |
 | Historical avatar | `avatars/2024/581.png` | 1 day       | 30 days                      | 7 days                 | 1 year             |
-| Current `404`     | `missing/581`          | 1 day       | 1 day                        | 1 day                  | —                  |
-| Historical `404`  | `missing/2024/581`     | 1 day       | 7 days                       | 1 day                  | —                  |
+| Current `404`     | `avatars/581.png`      | 1 day       | 1 day                        | 1 day                  | —                  |
+| Historical `404`  | `avatars/2024/581.png` | 1 day       | 7 days                       | 1 day                  | —                  |
 
 The browser TTL is the response's `max-age`. Cloudflare uses `s-maxage`; after that same freshness window, the Worker checks the R2 object's age and revalidates it with TBA. R2 objects and missing markers are retained until they are refreshed or replaced rather than expiring automatically.
 
@@ -80,8 +80,8 @@ There is intentionally no daily bulk job. A bulk refresh would issue thousands o
 1. The first request for a team fetches its avatar from TBA and stores it in R2.
 2. Workers Cache serves subsequent requests without running the Worker.
 3. After the applicable freshness window, Cloudflare can serve the stale response while the Worker refreshes it in the background.
-4. Missing avatars use a short negative-cache marker in R2 so repeated requests do not hit TBA.
+4. Missing avatars use an empty object with `missing` metadata at the avatar's R2 key so repeated requests do not hit TBA.
 
-Current and year-specific avatars use separate R2 keys and negative-cache markers. Requesting a historical avatar never changes the default current avatar.
+Current and year-specific avatars use separate R2 keys. Requesting a historical avatar never changes the default current avatar.
 
 Workers Cache is enabled in `wrangler.jsonc` and caches responses before the Worker executes. Hono's cache middleware is intentionally not used because it relies on the lower-level, data-center-local Cache API and would duplicate this cache layer.

@@ -19,14 +19,11 @@ export type Bindings = Env & {
 	TBA_AUTH_KEY: string;
 };
 
-type AvatarMetadata = {
-	sourceYear: string;
-};
+type AvatarMetadata = { missing: 'true' } | { sourceYear: string };
 
 export async function getAvatar(request: Request, env: Bindings, teamNumber: number, year?: number): Promise<Response> {
 	const keySuffix = year === undefined ? String(teamNumber) : `${year}/${teamNumber}`;
 	const avatarKey = `avatars/${keySuffix}.png`;
-	const missingKey = `missing/${keySuffix}`;
 	const now = Date.now();
 	const currentYear = new Date(now).getUTCFullYear();
 	const isHistorical = year !== undefined && year < currentYear;
@@ -35,16 +32,16 @@ export async function getAvatar(request: Request, env: Bindings, teamNumber: num
 	const avatarCacheControl = isHistorical ? HISTORICAL_AVATAR_CACHE_CONTROL : CURRENT_AVATAR_CACHE_CONTROL;
 	const missingCacheControl = isHistorical ? HISTORICAL_MISSING_CACHE_CONTROL : CURRENT_MISSING_CACHE_CONTROL;
 	const storedAvatar = await env.AVATARS.get(avatarKey);
+	const isMissing = storedAvatar?.customMetadata?.missing === 'true';
 
-	if (storedAvatar && isFresh(storedAvatar, avatarRefreshMs, now)) {
-		return avatarResponse(request, storedAvatar, avatarCacheControl);
-	}
-
-	if (!storedAvatar) {
-		const missing = await env.AVATARS.head(missingKey);
-
-		if (missing && isFresh(missing, missingRefreshMs, now)) {
+	if (storedAvatar) {
+		if (isMissing && isFresh(storedAvatar, missingRefreshMs, now)) {
+			void storedAvatar.body.cancel();
 			return missingResponse(teamNumber, missingCacheControl, year);
+		}
+
+		if (!isMissing && isFresh(storedAvatar, avatarRefreshMs, now)) {
+			return avatarResponse(request, storedAvatar, avatarCacheControl);
 		}
 	}
 
@@ -52,7 +49,10 @@ export async function getAvatar(request: Request, env: Bindings, teamNumber: num
 		const fetched = await fetchNormalizedAvatar(env, teamNumber, currentYear, year);
 
 		if (!fetched) {
-			await Promise.all([env.AVATARS.delete(avatarKey), env.AVATARS.put(missingKey, '')]);
+			await env.AVATARS.put(avatarKey, null, {
+				customMetadata: { missing: 'true' } satisfies AvatarMetadata,
+			});
+			void storedAvatar?.body.cancel();
 			return missingResponse(teamNumber, missingCacheControl, year);
 		}
 
@@ -65,15 +65,19 @@ export async function getAvatar(request: Request, env: Bindings, teamNumber: num
 				sourceYear: String(fetched.year),
 			} satisfies AvatarMetadata,
 		});
-		await env.AVATARS.delete(missingKey);
+		void storedAvatar?.body.cancel();
 
 		return bytesResponse(request, fetched.bytes, stored, fetched.year, avatarCacheControl);
 	} catch (error) {
 		console.error('Failed to refresh avatar', { teamNumber, year, error });
 		captureException(error, { extra: { teamNumber, year } });
 
-		if (storedAvatar) {
+		if (storedAvatar && !isMissing) {
 			return avatarResponse(request, storedAvatar, avatarCacheControl);
+		}
+
+		if (storedAvatar) {
+			void storedAvatar.body.cancel();
 		}
 
 		if (error instanceof UpstreamError) {
