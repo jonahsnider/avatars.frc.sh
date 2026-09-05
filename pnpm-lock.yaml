@@ -111,19 +111,19 @@ importers:
     dependencies:
       '@hono/zod-openapi':
         specifier: 1.6.3
-        version: 1.6.3(hono@4.13.5)(zod@4.5.4)
+        version: 1.6.3(hono@4.13.7)(zod@4.5.4)
       '@sentry/cloudflare':
         specifier: 10.73.0
         version: 10.73.0(wrangler@4.129.0)
       '@sentry/hono':
         specifier: 10.73.0
-        version: 10.73.0(@sentry/cloudflare@10.73.0(wrangler@4.129.0))(hono@4.13.5)
+        version: 10.73.0(@sentry/cloudflare@10.73.0(wrangler@4.129.0))(hono@4.13.7)
       fetch-extras:
         specifier: 3.2.1
         version: 3.2.1
       hono:
-        specifier: 4.13.5
-        version: 4.13.5
+        specifier: 4.13.7
+        version: 4.13.7
       zod:
         specifier: 4.5.4
         version: 4.5.4
@@ -1449,8 +1449,8 @@ packages:
   headers-polyfill@5.0.1:
     resolution: {integrity: sha512-1TJ6Fih/b8h5TIcv+1+Hw0PDQWJTKDKzFZzcKOiW1wJza3XoAQlkCuXLbymPYB8+ZQyw8mHvdw560e8zVFIWyA==}
 
-  hono@4.13.5:
-    resolution: {integrity: sha512-O6+/eCYRkzzzy0rPWwKLiGBR1nFuUPZynnwjxN1MBA62NNqbT0wQEzQyK2gSO5yDIDB336sXQleAhOHrzlYyKw==}
+  hono@4.13.7:
+    resolution: {integrity: sha512-c8/gF9ac8Y78/agExVocyLevgR+JlpNB444Py0FSX8pJoPdYUfUzRcXtYEYGwt6l19qIlVZPN5Mfsw9jFShmQQ==}
     engines: {node: '>=16.9.0'}
 
   is-fullwidth-code-point@3.0.0:
@@ -2058,17 +2058,17 @@ snapshots:
   '@esbuild/win32-x64@0.28.1':
     optional: true
 
-  '@hono/zod-openapi@1.6.3(hono@4.13.5)(zod@4.5.4)':
+  '@hono/zod-openapi@1.6.3(hono@4.13.7)(zod@4.5.4)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 9.1.0(zod@4.5.4)
-      '@hono/zod-validator': 0.9.1(hono@4.13.5)(zod@4.5.4)
-      hono: 4.13.5
+      '@hono/zod-validator': 0.9.1(hono@4.13.7)(zod@4.5.4)
+      hono: 4.13.7
       openapi3-ts: 4.6.1
       zod: 4.5.4
 
-  '@hono/zod-validator@0.9.1(hono@4.13.5)(zod@4.5.4)':
+  '@hono/zod-validator@0.9.1(hono@4.13.7)(zod@4.5.4)':
     dependencies:
-      hono: 4.13.5
+      hono: 4.13.7
       zod: 4.5.4
 
   '@img/colour@1.1.0': {}
@@ -2498,12 +2498,12 @@ snapshots:
     dependencies:
       '@sentry/conventions': 0.16.0
 
-  '@sentry/hono@10.73.0(@sentry/cloudflare@10.73.0(wrangler@4.129.0))(hono@4.13.5)':
+  '@sentry/hono@10.73.0(@sentry/cloudflare@10.73.0(wrangler@4.129.0))(hono@4.13.7)':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@sentry/conventions': 0.16.0
       '@sentry/core': 10.73.0
-      hono: 4.13.5
+      hono: 4.13.7
     optionalDependencies:
       '@sentry/cloudflare': 10.73.0(wrangler@4.129.0)
 
@@ -2766,7 +2766,7 @@ snapshots:
       '@types/set-cookie-parser': 2.4.10
       set-cookie-parser: 3.1.2
 
-  hono@4.13.5: {}
+  hono@4.13.7: {}
 
   is-fullwidth-code-point@3.0.0: {}
 
