@@ -19,7 +19,7 @@
 		"@sentry/hono": "10.74.0",
 		"fetch-extras": "3.2.1",
 		"hono": "4.13.7",
-		"zod": "4.5.4"
+		"zod": "4.6.0"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-plugin": "1.1.6",
