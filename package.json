@@ -22,7 +22,7 @@
 		"zod": "4.6.5"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-plugin": "1.1.9",
+		"@cloudflare/vitest-plugin": "1.1.10",
 		"@msw/cloudflare": "0.0.1",
 		"@types/node": "26.5.1",
 		"knip": "6.35.1",
