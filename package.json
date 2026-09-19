@@ -25,7 +25,7 @@
 		"@cloudflare/vitest-plugin": "1.1.12",
 		"@msw/cloudflare": "0.0.1",
 		"@types/node": "26.6.1",
-		"knip": "6.36.0",
+		"knip": "6.37.0",
 		"msw": "2.15.0",
 		"oxfmt": "0.68.0",
 		"typescript": "7.0.2",
