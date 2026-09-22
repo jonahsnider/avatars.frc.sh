@@ -170,11 +170,11 @@ importers:
         specifier: 1.6.3
         version: 1.6.3(hono@4.13.8)(zod@4.6.5)
       '@sentry/cloudflare':
-        specifier: 10.75.0
-        version: 10.75.0(wrangler@4.136.0(@types/node@26.6.2))
+        specifier: 10.75.1
+        version: 10.75.1(wrangler@4.136.0(@types/node@26.6.2))
       '@sentry/hono':
-        specifier: 10.75.0
-        version: 10.75.0(@sentry/cloudflare@10.75.0(wrangler@4.136.0(@types/node@26.6.2)))(hono@4.13.8)
+        specifier: 10.75.1
+        version: 10.75.1(@sentry/cloudflare@10.75.1(wrangler@4.136.0(@types/node@26.6.2)))(hono@4.13.8)
       fetch-extras:
         specifier: 3.2.1
         version: 3.2.1
@@ -1155,8 +1155,8 @@ packages:
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
-  '@sentry/cloudflare@10.75.0':
-    resolution: {integrity: sha512-2TvEXTihK8tNT0KB7WraoiSsSJ9dX6h4F7Wr0+k5rldPH9G1l6zc+6xP/u9CCB+m44XOHiI2omPGDkQ9uEo1ew==}
+  '@sentry/cloudflare@10.75.1':
+    resolution: {integrity: sha512-4DHNxZBGDP1BrAIk67bZzS7Iqi0u1GY7gir8Hix4xbvfO9aOmiZVmpUjELlZdfkAjlbRvZCl29wlRqLvkFlrFA==}
     engines: {node: '>=18'}
     peerDependencies:
       '@cloudflare/workers-types': ^4.x || ^5.x
@@ -1171,20 +1171,20 @@ packages:
     resolution: {integrity: sha512-fO9PLmHdVURcSPUpWCItWAtgKiMwGdJHbovoSEyLplX5sxs2ugvI4CBPTrkkgqhObnZOD0CnWBKDzSVQYBKEyQ==}
     engines: {node: '>=14'}
 
-  '@sentry/core@10.75.0':
-    resolution: {integrity: sha512-5wDQpQqjJ6RHdPR+z6Q+47XlwoxRKBv0yyB0LKHqL/1azPOQbR+nllyLmmQDcoJpaksuLSmLA1q6hFX7gjDT2w==}
+  '@sentry/core@10.75.1':
+    resolution: {integrity: sha512-+/+UanewqPK+oJvDQIHWKLUqnsa0iymEThOPCaFBA8ulbQh9k8lsz8V+NtJwP4G3ncclfzp15tzqVwn6iugV4Q==}
     engines: {node: '>=18'}
 
-  '@sentry/hono@10.75.0':
-    resolution: {integrity: sha512-G++UrMcwhaSVptGMQMxRhgrb4fLfd628kzHFEbAK3lmiRig2s9QjryYoiN8/iegn5c3ZI9VoxwCeqqFeBk0Plw==}
+  '@sentry/hono@10.75.1':
+    resolution: {integrity: sha512-vVoSBh8cJNqLJqTrT7dgI3w0Ct29nCRNb9nOPzqmxSG4AofmNMEGvuT+QJIWXx7Oh2zaB89NjYYFzV9uPakp1Q==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@cloudflare/workers-types': ^4.x
+      '@cloudflare/workers-types': ^4.x || ^5.x
       '@hono/node-server': ^1.x || ^2.x
-      '@sentry/bun': 10.75.0
-      '@sentry/cloudflare': 10.75.0
-      '@sentry/deno': 10.75.0
-      '@sentry/node': 10.75.0
+      '@sentry/bun': 10.75.1
+      '@sentry/cloudflare': 10.75.1
+      '@sentry/deno': 10.75.1
+      '@sentry/node': 10.75.1
       hono: ^4.x
     peerDependenciesMeta:
       '@cloudflare/workers-types':
@@ -1200,8 +1200,8 @@ packages:
       '@sentry/node':
         optional: true
 
-  '@sentry/server-utils@10.75.0':
-    resolution: {integrity: sha512-7fIa9vFGNzB13hmxl8Sip3xImSkqpc4wETzuQ7CLzVOwPvwI6y/gVEm0pxRhtJSq8SzfOp26eJWl80u8v78Osg==}
+  '@sentry/server-utils@10.75.1':
+    resolution: {integrity: sha512-HuA/bCtthA5x/AjYD5WUbG6CBcYJb0WAWKNgrgNkUWtll6eMqG3+7LO4PBcGRbZtlg1OFgClJm4iQFgRN7+ZZg==}
     engines: {node: '>=18'}
 
   '@sindresorhus/is@7.2.0':
@@ -2559,34 +2559,34 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@sentry/cloudflare@10.75.0(wrangler@4.136.0(@types/node@26.6.2))':
+  '@sentry/cloudflare@10.75.1(wrangler@4.136.0(@types/node@26.6.2))':
     dependencies:
       '@opentelemetry/api': 1.9.1
-      '@sentry/core': 10.75.0
-      '@sentry/server-utils': 10.75.0
+      '@sentry/core': 10.75.1
+      '@sentry/server-utils': 10.75.1
       magic-string: 0.30.21
     optionalDependencies:
       wrangler: 4.136.0(@types/node@26.6.2)
 
   '@sentry/conventions@0.16.0': {}
 
-  '@sentry/core@10.75.0':
+  '@sentry/core@10.75.1':
     dependencies:
       '@sentry/conventions': 0.16.0
 
-  '@sentry/hono@10.75.0(@sentry/cloudflare@10.75.0(wrangler@4.136.0(@types/node@26.6.2)))(hono@4.13.8)':
+  '@sentry/hono@10.75.1(@sentry/cloudflare@10.75.1(wrangler@4.136.0(@types/node@26.6.2)))(hono@4.13.8)':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@sentry/conventions': 0.16.0
-      '@sentry/core': 10.75.0
+      '@sentry/core': 10.75.1
       hono: 4.13.8
     optionalDependencies:
-      '@sentry/cloudflare': 10.75.0(wrangler@4.136.0(@types/node@26.6.2))
+      '@sentry/cloudflare': 10.75.1(wrangler@4.136.0(@types/node@26.6.2))
 
-  '@sentry/server-utils@10.75.0':
+  '@sentry/server-utils@10.75.1':
     dependencies:
       '@sentry/conventions': 0.16.0
-      '@sentry/core': 10.75.0
+      '@sentry/core': 10.75.1
 
   '@sindresorhus/is@7.2.0': {}
 
