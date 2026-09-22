@@ -27,7 +27,7 @@
 		"@types/node": "26.6.2",
 		"knip": "6.37.0",
 		"msw": "2.15.0",
-		"oxfmt": "0.68.0",
+		"oxfmt": "0.69.0",
 		"typescript": "7.0.2",
 		"vitest": "4.1.11",
 		"wrangler": "4.135.0"
