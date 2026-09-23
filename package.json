@@ -15,8 +15,8 @@
 	},
 	"dependencies": {
 		"@hono/zod-openapi": "1.6.3",
-		"@sentry/cloudflare": "10.75.1",
-		"@sentry/hono": "10.75.1",
+		"@sentry/cloudflare": "10.75.2",
+		"@sentry/hono": "10.75.2",
 		"fetch-extras": "3.2.1",
 		"hono": "4.13.8",
 		"zod": "4.6.5"
