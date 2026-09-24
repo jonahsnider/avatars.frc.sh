@@ -171,10 +171,10 @@ importers:
         version: 1.6.3(hono@4.13.8)(zod@4.6.5)
       '@sentry/cloudflare':
         specifier: 11.0.0
-        version: 11.0.0(wrangler@4.136.3(@types/node@26.6.2))
+        version: 11.0.0(wrangler@4.137.0(@types/node@26.6.2))
       '@sentry/hono':
         specifier: 11.0.0
-        version: 11.0.0(@sentry/cloudflare@11.0.0(wrangler@4.136.3(@types/node@26.6.2)))(hono@4.13.8)
+        version: 11.0.0(@sentry/cloudflare@11.0.0(wrangler@4.137.0(@types/node@26.6.2)))(hono@4.13.8)
       fetch-extras:
         specifier: 3.2.1
         version: 3.2.1
@@ -210,8 +210,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.6.2)(msw@2.15.0(@types/node@26.6.2)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       wrangler:
-        specifier: 4.136.3
-        version: 4.136.3(@types/node@26.6.2)
+        specifier: 4.137.0
+        version: 4.137.0(@types/node@26.6.2)
 
 packages:
 
@@ -1929,16 +1929,6 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  wrangler@4.136.3:
-    resolution: {integrity: sha512-L1bS8BI9xoEk3RRr5XoZn5q5k1jCRo8+37ZEEab/jsUFzE1Ea2sIBAbmP1CdwSeD6mZYmnUtR6xpi9esHIl6GA==}
-    engines: {node: '>=22.0.0'}
-    hasBin: true
-    peerDependencies:
-      '@cloudflare/workers-types': ^5.20260921.1
-    peerDependenciesMeta:
-      '@cloudflare/workers-types':
-        optional: true
-
   wrangler@4.137.0:
     resolution: {integrity: sha512-vq2JmxkvwOjnsMUejQwd89/EK6u1d20OMlGUVVmb55gVi2zSBKp2rvmxUiPqrSEntK8NwzpTF3DQ/S2I9/TLsg==}
     engines: {node: '>=22.0.0'}
@@ -2575,7 +2565,7 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@sentry/cloudflare@11.0.0(wrangler@4.136.3(@types/node@26.6.2))':
+  '@sentry/cloudflare@11.0.0(wrangler@4.137.0(@types/node@26.6.2))':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@sentry/conventions': 0.23.0
@@ -2584,7 +2574,7 @@ snapshots:
       '@sentry/server-utils': 11.0.0
       magic-string: 0.30.21
     optionalDependencies:
-      wrangler: 4.136.3(@types/node@26.6.2)
+      wrangler: 4.137.0(@types/node@26.6.2)
 
   '@sentry/conventions@0.23.0': {}
 
@@ -2592,14 +2582,14 @@ snapshots:
     dependencies:
       '@sentry/conventions': 0.23.0
 
-  '@sentry/hono@11.0.0(@sentry/cloudflare@11.0.0(wrangler@4.136.3(@types/node@26.6.2)))(hono@4.13.8)':
+  '@sentry/hono@11.0.0(@sentry/cloudflare@11.0.0(wrangler@4.137.0(@types/node@26.6.2)))(hono@4.13.8)':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@sentry/conventions': 0.23.0
       '@sentry/core': 11.0.0
       hono: 4.13.8
     optionalDependencies:
-      '@sentry/cloudflare': 11.0.0(wrangler@4.136.3(@types/node@26.6.2))
+      '@sentry/cloudflare': 11.0.0(wrangler@4.137.0(@types/node@26.6.2))
 
   '@sentry/opentelemetry@11.0.0(@opentelemetry/api@1.9.1)':
     dependencies:
@@ -3301,23 +3291,6 @@ snapshots:
       '@cloudflare/workerd-linux-64': 1.20260921.1
       '@cloudflare/workerd-linux-arm64': 1.20260921.1
       '@cloudflare/workerd-windows-64': 1.20260921.1
-
-  wrangler@4.136.3(@types/node@26.6.2):
-    dependencies:
-      '@cloudflare/kv-asset-handler': 0.5.0
-      '@cloudflare/unenv-preset': 2.16.2(unenv@2.0.0-rc.24)(workerd@1.20260921.1)
-      blake3-wasm: 2.1.5
-      esbuild: 0.28.1
-      miniflare: 5.20260921.0-alpha(@types/node@26.6.2)
-      path-to-regexp: 6.3.0
-      unenv: 2.0.0-rc.24
-      workerd: 1.20260921.1
-    optionalDependencies:
-      fsevents: 2.3.3
-    transitivePeerDependencies:
-      - '@types/node'
-      - bufferutil
-      - utf-8-validate
 
   wrangler@4.137.0(@types/node@26.6.2):
     dependencies:
