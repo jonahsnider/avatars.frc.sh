@@ -18,7 +18,7 @@
 		"@sentry/cloudflare": "11.0.0",
 		"@sentry/hono": "11.0.0",
 		"fetch-extras": "3.2.1",
-		"hono": "4.13.8",
+		"hono": "4.13.9",
 		"zod": "4.6.5"
 	},
 	"devDependencies": {
