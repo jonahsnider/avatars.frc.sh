@@ -30,7 +30,7 @@
 		"oxfmt": "0.70.0",
 		"typescript": "7.0.2",
 		"vitest": "4.1.11",
-		"wrangler": "4.139.0"
+		"wrangler": "4.140.0"
 	},
 	"devEngines": {
 		"runtime": {
