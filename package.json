@@ -23,7 +23,7 @@
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-plugin": "1.2.7",
-		"@msw/cloudflare": "0.0.1",
+		"@msw/cloudflare": "0.1.0",
 		"@types/node": "26.6.2",
 		"knip": "6.38.0",
 		"msw": "2.15.0",
