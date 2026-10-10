@@ -24,7 +24,7 @@
 	"devDependencies": {
 		"@cloudflare/vitest-plugin": "1.4.0",
 		"@msw/cloudflare": "0.1.0",
-		"@types/node": "26.6.4",
+		"@types/node": "26.6.5",
 		"knip": "6.41.0",
 		"msw": "2.15.0",
 		"oxfmt": "0.72.0",
