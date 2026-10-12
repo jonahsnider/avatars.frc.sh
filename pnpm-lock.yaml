@@ -168,7 +168,7 @@ importers:
     dependencies:
       '@hono/zod-openapi':
         specifier: 1.6.3
-        version: 1.6.3(hono@4.13.13)(zod@4.6.5)
+        version: 1.6.3(hono@4.13.13)(zod@4.6.6)
       '@sentry/cloudflare':
         specifier: 11.6.0
         version: 11.6.0(wrangler@4.149.0(@types/node@26.6.5))
@@ -182,8 +182,8 @@ importers:
         specifier: 4.13.13
         version: 4.13.13
       zod:
-        specifier: 4.6.5
-        version: 4.6.5
+        specifier: 4.6.6
+        version: 4.6.6
     devDependencies:
       '@cloudflare/vitest-plugin':
         specifier: 1.4.0
@@ -1960,12 +1960,15 @@ packages:
   zod@4.6.5:
     resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
 
+  zod@4.6.6:
+    resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
+
 snapshots:
 
-  '@asteasolutions/zod-to-openapi@9.1.0(zod@4.6.5)':
+  '@asteasolutions/zod-to-openapi@9.1.0(zod@4.6.6)':
     dependencies:
       openapi3-ts: 4.6.1
-      zod: 4.6.5
+      zod: 4.6.6
 
   '@cloudflare/kv-asset-handler@0.5.0': {}
 
@@ -2107,18 +2110,18 @@ snapshots:
   '@esbuild/win32-x64@0.28.2':
     optional: true
 
-  '@hono/zod-openapi@1.6.3(hono@4.13.13)(zod@4.6.5)':
+  '@hono/zod-openapi@1.6.3(hono@4.13.13)(zod@4.6.6)':
     dependencies:
-      '@asteasolutions/zod-to-openapi': 9.1.0(zod@4.6.5)
-      '@hono/zod-validator': 0.9.1(hono@4.13.13)(zod@4.6.5)
+      '@asteasolutions/zod-to-openapi': 9.1.0(zod@4.6.6)
+      '@hono/zod-validator': 0.9.1(hono@4.13.13)(zod@4.6.6)
       hono: 4.13.13
       openapi3-ts: 4.6.1
-      zod: 4.6.5
+      zod: 4.6.6
 
-  '@hono/zod-validator@0.9.1(hono@4.13.13)(zod@4.6.5)':
+  '@hono/zod-validator@0.9.1(hono@4.13.13)(zod@4.6.6)':
     dependencies:
       hono: 4.13.13
-      zod: 4.6.5
+      zod: 4.6.6
 
   '@img/colour@1.1.0': {}
 
@@ -2821,7 +2824,7 @@ snapshots:
       tinyglobby: 0.2.17
       unbash: 5.0.0
       yaml: 2.9.1
-      zod: 4.6.5
+      zod: 4.6.6
 
   lightningcss-android-arm64@1.33.0:
     optional: true
@@ -3278,3 +3281,5 @@ snapshots:
       youch-core: 0.3.3
 
   zod@4.6.5: {}
+
+  zod@4.6.6: {}
