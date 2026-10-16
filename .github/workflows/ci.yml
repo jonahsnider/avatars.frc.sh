@@ -20,5 +20,12 @@ jobs:
         uses: pnpm/setup@v3
         with:
           cache: true
-      - name: Run checks
-        run: pnpm check
+      - name: Generate types
+        run: pnpm types
+      - parallel:
+          - name: Check formatting
+            run: pnpm format
+          - name: Type check
+            run: pnpm type-check
+          - name: Test
+            run: pnpm test
