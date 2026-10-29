@@ -171,10 +171,10 @@ importers:
         version: 1.6.3(hono@4.13.14)(zod@4.6.7)
       '@sentry/cloudflare':
         specifier: 11.10.0
-        version: 11.10.0(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.154.0(@types/node@26.6.5))
+        version: 11.10.0(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.154.0(@types/node@26.6.6))
       '@sentry/hono':
         specifier: 11.10.0
-        version: 11.10.0(@sentry/cloudflare@11.10.0(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.154.0(@types/node@26.6.5)))(hono@4.13.14)
+        version: 11.10.0(@sentry/cloudflare@11.10.0(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.154.0(@types/node@26.6.6)))(hono@4.13.14)
       fetch-extras:
         specifier: 3.2.1
         version: 3.2.1
@@ -187,19 +187,19 @@ importers:
     devDependencies:
       '@cloudflare/vitest-plugin':
         specifier: 1.4.9
-        version: 1.4.9(@types/node@26.6.5)(vitest@5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(msw@2.15.0(@types/node@26.6.5)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)))
+        version: 1.4.9(@types/node@26.6.6)(vitest@5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.6)(msw@2.15.0(@types/node@26.6.6)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)))
       '@msw/cloudflare':
         specifier: 0.1.0
-        version: 0.1.0(msw@2.15.0(@types/node@26.6.5)(typescript@7.0.2))
+        version: 0.1.0(msw@2.15.0(@types/node@26.6.6)(typescript@7.0.2))
       '@types/node':
-        specifier: 26.6.5
-        version: 26.6.5
+        specifier: 26.6.6
+        version: 26.6.6
       knip:
         specifier: 6.43.0
         version: 6.43.0
       msw:
         specifier: 2.15.0
-        version: 2.15.0(@types/node@26.6.5)(typescript@7.0.2)
+        version: 2.15.0(@types/node@26.6.6)(typescript@7.0.2)
       oxfmt:
         specifier: 0.75.0
         version: 0.75.0
@@ -208,10 +208,10 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 5.0.5
-        version: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(msw@2.15.0(@types/node@26.6.5)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.6)(msw@2.15.0(@types/node@26.6.6)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
       wrangler:
         specifier: 4.154.0
-        version: 4.154.0(@types/node@26.6.5)
+        version: 4.154.0(@types/node@26.6.6)
 
 packages:
 
@@ -1230,11 +1230,8 @@ packages:
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
-  '@types/node@26.4.0':
-    resolution: {integrity: sha512-faiGnoIrLH/V8cibOMEAZ8pMw6oXqSukl29ra4mN8GdaB2ZewzeaLj+INpV5N+Z1eKWzY+IzaIZH2EIR6YZRNQ==}
-
-  '@types/node@26.6.5':
-    resolution: {integrity: sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg==}
+  '@types/node@26.6.6':
+    resolution: {integrity: sha512-MzQj+8Kx3XI40OmUAE6Qoh58ZMNstNNMwn2nfd3qWsfe7nDNSqJNzes4njhz6AHwrSHOffSLwXU6yb474Q4aog==}
 
   '@types/set-cookie-parser@2.4.10':
     resolution: {integrity: sha512-GGmQVGpQWUe5qglJozEjZV/5dyxbOOZ0LHe/lqyWssB88Y4svNfst0uqBVscdDeIKl5Jy5+aPSvy7mI9tYRguw==}
@@ -1792,9 +1789,6 @@ packages:
     resolution: {integrity: sha512-0db9eS5iqybux41zLkX69nk90KTci7F7eZ+gXzEG/Q7E0tAqEBhRh5fkZvk1N7jT7QkGWqq34i8SFGPFEe1V8A==}
     engines: {node: '>=14'}
 
-  undici-types@8.3.0:
-    resolution: {integrity: sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ==}
-
   undici-types@8.9.0:
     resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
@@ -1981,13 +1975,13 @@ snapshots:
     optionalDependencies:
       workerd: 1.20261023.1
 
-  '@cloudflare/vitest-plugin@1.4.9(@types/node@26.6.5)(vitest@5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(msw@2.15.0(@types/node@26.6.5)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)))':
+  '@cloudflare/vitest-plugin@1.4.9(@types/node@26.6.6)(vitest@5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.6)(msw@2.15.0(@types/node@26.6.6)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)))':
     dependencies:
       cjs-module-lexer: 1.2.3
       esbuild: 0.28.2
-      miniflare: 5.20261023.1-beta(@types/node@26.6.5)
-      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(msw@2.15.0(@types/node@26.6.5)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
-      wrangler: 4.154.0(@types/node@26.6.5)
+      miniflare: 5.20261023.1-beta(@types/node@26.6.6)
+      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.6)(msw@2.15.0(@types/node@26.6.6)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
+      wrangler: 4.154.0(@types/node@26.6.6)
       zod: 4.6.6
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
@@ -2234,30 +2228,30 @@ snapshots:
 
   '@inquirer/ansi@2.0.7': {}
 
-  '@inquirer/confirm@6.3.0(@types/node@26.6.5)':
+  '@inquirer/confirm@6.3.0(@types/node@26.6.6)':
     dependencies:
-      '@inquirer/core': 12.0.1(@types/node@26.6.5)
-      '@inquirer/type': 4.1.0(@types/node@26.6.5)
+      '@inquirer/core': 12.0.1(@types/node@26.6.6)
+      '@inquirer/type': 4.1.0(@types/node@26.6.6)
     optionalDependencies:
-      '@types/node': 26.6.5
+      '@types/node': 26.6.6
 
-  '@inquirer/core@12.0.1(@types/node@26.6.5)':
+  '@inquirer/core@12.0.1(@types/node@26.6.6)':
     dependencies:
       '@inquirer/ansi': 2.0.7
       '@inquirer/figures': 2.0.8
-      '@inquirer/type': 4.1.0(@types/node@26.6.5)
+      '@inquirer/type': 4.1.0(@types/node@26.6.6)
       cli-width: 4.1.0
       fast-wrap-ansi: 0.2.2
       mute-stream: 3.0.0
       signal-exit: 4.1.0
     optionalDependencies:
-      '@types/node': 26.6.5
+      '@types/node': 26.6.6
 
   '@inquirer/figures@2.0.8': {}
 
-  '@inquirer/type@4.1.0(@types/node@26.6.5)':
+  '@inquirer/type@4.1.0(@types/node@26.6.6)':
     optionalDependencies:
-      '@types/node': 26.6.5
+      '@types/node': 26.6.6
 
   '@jridgewell/resolve-uri@3.1.2': {}
 
@@ -2273,10 +2267,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  '@msw/cloudflare@0.1.0(msw@2.15.0(@types/node@26.6.5)(typescript@7.0.2))':
+  '@msw/cloudflare@0.1.0(msw@2.15.0(@types/node@26.6.6)(typescript@7.0.2))':
     dependencies:
       '@mswjs/interceptors': 0.41.9
-      msw: 2.15.0(@types/node@26.6.5)(typescript@7.0.2)
+      msw: 2.15.0(@types/node@26.6.6)(typescript@7.0.2)
 
   '@mswjs/interceptors@0.41.9':
     dependencies:
@@ -2545,7 +2539,7 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@sentry/cloudflare@11.10.0(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.154.0(@types/node@26.6.5))':
+  '@sentry/cloudflare@11.10.0(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.154.0(@types/node@26.6.6))':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@sentry/conventions': 0.29.0
@@ -2554,8 +2548,8 @@ snapshots:
       '@sentry/server-utils': 11.10.0
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)
-      wrangler: 4.154.0(@types/node@26.6.5)
+      vite: 8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)
+      wrangler: 4.154.0(@types/node@26.6.6)
 
   '@sentry/conventions@0.29.0': {}
 
@@ -2563,7 +2557,7 @@ snapshots:
     dependencies:
       '@sentry/conventions': 0.29.0
 
-  '@sentry/hono@11.10.0(@sentry/cloudflare@11.10.0(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.154.0(@types/node@26.6.5)))(hono@4.13.14)':
+  '@sentry/hono@11.10.0(@sentry/cloudflare@11.10.0(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.154.0(@types/node@26.6.6)))(hono@4.13.14)':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@sentry/conventions': 0.29.0
@@ -2571,7 +2565,7 @@ snapshots:
       '@sentry/server-utils': 11.10.0
       hono: 4.13.14
     optionalDependencies:
-      '@sentry/cloudflare': 11.10.0(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.154.0(@types/node@26.6.5))
+      '@sentry/cloudflare': 11.10.0(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.154.0(@types/node@26.6.6))
 
   '@sentry/opentelemetry@11.10.0(@opentelemetry/api@1.9.1)':
     dependencies:
@@ -2603,17 +2597,13 @@ snapshots:
 
   '@types/estree@1.0.9': {}
 
-  '@types/node@26.4.0':
-    dependencies:
-      undici-types: 8.3.0
-
-  '@types/node@26.6.5':
+  '@types/node@26.6.6':
     dependencies:
       undici-types: 8.9.0
 
   '@types/set-cookie-parser@2.4.10':
     dependencies:
-      '@types/node': 26.4.0
+      '@types/node': 26.6.6
 
   '@types/statuses@2.0.6': {}
 
@@ -2677,15 +2667,15 @@ snapshots:
   '@typescript/typescript-win32-x64@7.0.2':
     optional: true
 
-  '@vitest/mocker@5.0.5(msw@2.15.0(@types/node@26.6.5)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))':
+  '@vitest/mocker@5.0.5(msw@2.15.0(@types/node@26.6.6)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.5
       estree-walker: 3.0.3
       magic-string: 1.4.3
     optionalDependencies:
-      msw: 2.15.0(@types/node@26.6.5)(typescript@7.0.2)
-      vite: 8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)
+      msw: 2.15.0(@types/node@26.6.6)(typescript@7.0.2)
+      vite: 8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)
 
   '@vitest/spy@5.0.5': {}
 
@@ -2887,10 +2877,10 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  miniflare@5.20261023.1-beta(@types/node@26.6.5):
+  miniflare@5.20261023.1-beta(@types/node@26.6.6):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
-      sharp: 0.35.5(@types/node@26.6.5)
+      sharp: 0.35.5(@types/node@26.6.6)
       undici: 7.30.1
       workerd: 1.20261023.1
       ws: 8.21.0
@@ -2900,9 +2890,9 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  msw@2.15.0(@types/node@26.6.5)(typescript@7.0.2):
+  msw@2.15.0(@types/node@26.6.6)(typescript@7.0.2):
     dependencies:
-      '@inquirer/confirm': 6.3.0(@types/node@26.6.5)
+      '@inquirer/confirm': 6.3.0(@types/node@26.6.6)
       '@mswjs/interceptors': 0.41.9
       '@open-draft/deferred-promise': 3.0.0
       '@types/statuses': 2.0.6
@@ -3054,7 +3044,7 @@ snapshots:
 
   set-cookie-parser@3.1.2: {}
 
-  sharp@0.35.5(@types/node@26.6.5):
+  sharp@0.35.5(@types/node@26.6.6):
     dependencies:
       '@img/colour': 1.1.0
       detect-libc: 2.1.2
@@ -3085,7 +3075,7 @@ snapshots:
       '@img/sharp-win32-arm64': 0.35.5
       '@img/sharp-win32-ia32': 0.35.5
       '@img/sharp-win32-x64': 0.35.5
-      '@types/node': 26.6.5
+      '@types/node': 26.6.6
 
   signal-exit@4.1.0: {}
 
@@ -3168,8 +3158,6 @@ snapshots:
 
   unbash@6.0.1: {}
 
-  undici-types@8.3.0: {}
-
   undici-types@8.9.0: {}
 
   undici@7.30.1: {}
@@ -3180,7 +3168,7 @@ snapshots:
 
   until-async@3.0.2: {}
 
-  vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0):
+  vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -3188,16 +3176,16 @@ snapshots:
       rolldown: 1.2.6
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 26.6.5
+      '@types/node': 26.6.6
       esbuild: 0.28.2
       fsevents: 2.3.3
       jiti: 2.7.0
       yaml: 2.9.0
 
-  vitest@5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(msw@2.15.0(@types/node@26.6.5)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)):
+  vitest@5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.6)(msw@2.15.0(@types/node@26.6.6)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.5(msw@2.15.0(@types/node@26.6.5)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
+      '@vitest/mocker': 5.0.5(msw@2.15.0(@types/node@26.6.6)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
       chai: 6.3.0
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -3208,11 +3196,11 @@ snapshots:
       tinybench: 6.2.2
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      vite: 8.2.2(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)
+      vite: 8.2.2(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
-      '@types/node': 26.6.5
+      '@types/node': 26.6.6
     transitivePeerDependencies:
       - msw
 
@@ -3228,13 +3216,13 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20261023.1
       '@cloudflare/workerd-windows-64': 1.20261023.1
 
-  wrangler@4.154.0(@types/node@26.6.5):
+  wrangler@4.154.0(@types/node@26.6.6):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.5.0
       '@cloudflare/unenv-preset': 2.16.2(unenv@2.0.0-rc.24)(workerd@1.20261023.1)
       blake3-wasm: 2.1.5
       esbuild: 0.28.2
-      miniflare: 5.20261023.1-beta(@types/node@26.6.5)
+      miniflare: 5.20261023.1-beta(@types/node@26.6.6)
       path-to-regexp: 6.3.0
       unenv: 2.0.0-rc.24
       workerd: 1.20261023.1
