@@ -187,19 +187,19 @@ importers:
     dependencies:
       '@hono/zod-openapi':
         specifier: 1.6.3
-        version: 1.6.3(hono@4.13.21)(zod@4.6.7)
+        version: 1.6.3(hono@4.13.22)(zod@4.6.7)
       '@sentry/cloudflare':
         specifier: 11.17.0
         version: 11.17.0(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.168.0(@types/node@26.6.7)(vitest@5.1.1(@opentelemetry/api@1.9.1)(@types/node@26.6.7)(msw@2.15.0(@types/node@26.6.7)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))))
       '@sentry/hono':
         specifier: 11.17.0
-        version: 11.17.0(@sentry/cloudflare@11.17.0(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.168.0(@types/node@26.6.7)(vitest@5.1.1(@opentelemetry/api@1.9.1)(@types/node@26.6.7)(msw@2.15.0(@types/node@26.6.7)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)))))(hono@4.13.21)
+        version: 11.17.0(@sentry/cloudflare@11.17.0(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.168.0(@types/node@26.6.7)(vitest@5.1.1(@opentelemetry/api@1.9.1)(@types/node@26.6.7)(msw@2.15.0(@types/node@26.6.7)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)))))(hono@4.13.22)
       fetch-extras:
         specifier: 3.2.1
         version: 3.2.1
       hono:
-        specifier: 4.13.21
-        version: 4.13.21
+        specifier: 4.13.22
+        version: 4.13.22
       zod:
         specifier: 4.6.7
         version: 4.6.7
@@ -1627,8 +1627,8 @@ packages:
   headers-polyfill@5.0.1:
     resolution: {integrity: sha512-1TJ6Fih/b8h5TIcv+1+Hw0PDQWJTKDKzFZzcKOiW1wJza3XoAQlkCuXLbymPYB8+ZQyw8mHvdw560e8zVFIWyA==}
 
-  hono@4.13.21:
-    resolution: {integrity: sha512-h9UsguqfVk4kjUwLvQpHOmOaJpW10jz9lp8bvKUUa04wJG/fabKFBqXZ06D6LFaeKQZtUZRVeg0gfkTTEsX7Mw==}
+  hono@4.13.22:
+    resolution: {integrity: sha512-wncKd5/40Pj8grx0RZ2fgNIicFEmVFwIHT5UFLTnphR8I6AQWFf9c2JoM6ZJ9g8y4pMzg3sNlCVNe0m2Yclg0Q==}
     engines: {node: '>=16.9.0'}
 
   humanize-ms@1.2.1:
@@ -2303,17 +2303,17 @@ snapshots:
   '@esbuild/win32-x64@0.28.2':
     optional: true
 
-  '@hono/zod-openapi@1.6.3(hono@4.13.21)(zod@4.6.7)':
+  '@hono/zod-openapi@1.6.3(hono@4.13.22)(zod@4.6.7)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 9.1.0(zod@4.6.7)
-      '@hono/zod-validator': 0.9.1(hono@4.13.21)(zod@4.6.7)
-      hono: 4.13.21
+      '@hono/zod-validator': 0.9.1(hono@4.13.22)(zod@4.6.7)
+      hono: 4.13.22
       openapi3-ts: 4.6.1
       zod: 4.6.7
 
-  '@hono/zod-validator@0.9.1(hono@4.13.21)(zod@4.6.7)':
+  '@hono/zod-validator@0.9.1(hono@4.13.22)(zod@4.6.7)':
     dependencies:
-      hono: 4.13.21
+      hono: 4.13.22
       zod: 4.6.7
 
   '@img/colour@1.1.0': {}
@@ -2753,13 +2753,13 @@ snapshots:
     dependencies:
       '@sentry/conventions': 0.35.0
 
-  '@sentry/hono@11.17.0(@sentry/cloudflare@11.17.0(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.168.0(@types/node@26.6.7)(vitest@5.1.1(@opentelemetry/api@1.9.1)(@types/node@26.6.7)(msw@2.15.0(@types/node@26.6.7)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)))))(hono@4.13.21)':
+  '@sentry/hono@11.17.0(@sentry/cloudflare@11.17.0(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.168.0(@types/node@26.6.7)(vitest@5.1.1(@opentelemetry/api@1.9.1)(@types/node@26.6.7)(msw@2.15.0(@types/node@26.6.7)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)))))(hono@4.13.22)':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@sentry/conventions': 0.35.0
       '@sentry/core': 11.17.0
       '@sentry/server-utils': 11.17.0
-      hono: 4.13.21
+      hono: 4.13.22
     optionalDependencies:
       '@sentry/cloudflare': 11.17.0(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))(wrangler@4.168.0(@types/node@26.6.7)(vitest@5.1.1(@opentelemetry/api@1.9.1)(@types/node@26.6.7)(msw@2.15.0(@types/node@26.6.7)(typescript@7.0.2))(vite@8.2.2(@types/node@26.6.7)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))))
 
@@ -3113,7 +3113,7 @@ snapshots:
       '@types/set-cookie-parser': 2.4.10
       set-cookie-parser: 3.1.2
 
-  hono@4.13.21: {}
+  hono@4.13.22: {}
 
   humanize-ms@1.2.1:
     dependencies:
